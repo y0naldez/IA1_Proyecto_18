@@ -1,0 +1,506 @@
+{
+    "intents": [
+        {
+            "tag": "saludo",
+            "patterns": [
+                "Hola",
+                "Ola",
+                "Holas",
+                "¿Qué tal?",
+                "Buenas",
+                "Bnas",
+                "¿Hay alguien ahí?",
+                "Saludos",
+                "Buen día",
+                "Holi",
+                "Holis",
+                "Hello",
+                "Hey",
+                "Qué onda",
+                "Onda",
+                "Hola, hola",
+                "Wenas",
+                "Alo",
+                "Aloha",
+                "Que hubo",
+                "Quiubo",
+                "Qué hay",
+                "Hola a todos",
+                "Buenasss",
+                "Oli",
+                "Holii",
+                "Holaaa",
+                "Buenaa",
+                "Qué pasó",
+                "Pasó algo?",
+                "Qué pex",
+                "Qué talco",
+                "Hello there",
+                "Buenas noches",
+                "Buenas tardes",
+                "Buenos días",
+                "Buena onda",
+                "Qué ondaaaa",
+                "Wolaaa",
+                "Saludos a todos",
+                "Holis a todos",
+                "Ey!",
+                "Wenas tardes",
+                "Ey qué tal",
+                "¿Quién anda ahí?",
+                "Qué transa",
+                "Qué rollo",
+                "Aquí ando",
+                "Eyyy",
+                "Qué cuentas"
+            ],
+            "responses": [
+                "¡Hola! 😊 ¿Qué hay de nuevo?",
+                "Hola, ¿cómo va todo?",
+                "¡Holis! ¿Qué tal todo por tu lado?",
+                "Saludos, ¿en qué puedo ayudarte?"
+            ],
+            "context_set": "saludo_hecho"
+        },
+        {
+            "tag": "emocion_bien",
+            "patterns": [
+                "Estoy bien",
+                "Todo bien",
+                "Todo en orden",
+                "Muy bien",
+                "Genial",
+                "Perfecto"
+            ],
+            "responses": [
+                "¡Me alegra escucharlo! 😊",
+                "¡Qué bueno saberlo! ¿En qué más puedo ayudarte?",
+                "¡Perfecto! Si necesitas algo, aquí estoy.",
+                "¡Genial! Espero que sigas teniendo un excelente día."
+            ],
+            "context_filter": "saludo_hecho",
+            "context_set": "emocion_bien"
+        },
+        {
+            "tag": "emocion_mal",
+            "patterns": [
+                "Estoy mal",
+                "No muy bien",
+                "Me siento mal",
+                "Todo está mal",
+                "Mal",
+                "Horrible"
+            ],
+            "responses": [
+                "Lo siento mucho, ¿hay algo en lo que pueda ayudarte?",
+                "Siento que no te sientas bien, ¿quieres hablar al respecto?",
+                "Estoy aquí para ti, cuéntame cómo puedo ayudarte.",
+                "Lamento que te sientas así, ¿en qué puedo ayudarte?"
+            ],
+            "context_filter": "saludo_hecho",
+            "context_set": "emocion_mal"
+        },
+        {
+            "tag": "emocion_triste",
+            "patterns": [
+                "Estoy triste",
+                "Me siento triste",
+                "Un poco triste",
+                "Muy triste",
+                "Desanimado",
+                "Deprimido"
+            ],
+            "responses": [
+                "Siento mucho que te sientas así. ¿Quieres hablar de ello?",
+                "Aquí estoy para escucharte. ¿Cómo puedo ayudarte?",
+                "Lamento que estés pasando por esto. Dime si puedo hacer algo por ti.",
+                "Tu bienestar es importante. Estoy aquí para apoyarte."
+            ],
+            "context_filter": "saludo_hecho",
+            "context_set": "emocion_triste"
+        },
+        {
+            "tag": "curiosidad",
+            "patterns": [
+                "Cuéntame algo curioso",
+                "Dime algo interesante",
+                "Algún dato curioso",
+                "Sorpréndeme",
+                "Cuéntame algo"
+            ],
+            "responses": [
+            "¿Sabías que los pulpos tienen tres corazones y su sangre es azul? Son criaturas fascinantes.",
+            "Los gatos no pueden saborear lo dulce. ¿Sabías eso?",
+            "El corazón de una ballena azul puede pesar hasta 180 kilos. ¡Increíble!",
+            "Las abejas pueden recordar rostros humanos. ¡Qué inteligentes son!",
+            "El Sol tarda unos 225 millones de años en completar una órbita alrededor de la Vía Láctea.",
+            "¿Sabías que las jirafas solo duermen entre 10 y 30 minutos al día?",
+            "El sonido del rugido de un león puede escucharse hasta a 8 kilómetros de distancia.",
+            "Los koalas tienen huellas dactilares casi idénticas a las humanas. ¡Incluso pueden confundir a los investigadores!",
+            "En el espacio, los astronautas pueden crecer hasta 5 centímetros porque su columna vertebral se expande en microgravedad.",
+            "Las estrellas de mar no tienen cerebro ni sangre, pero pueden regenerar sus brazos perdidos.",
+            "Los tiburones han existido por más de 400 millones de años, ¡incluso antes que los dinosaurios!",
+            "El colibrí es el único ave que puede volar hacia atrás.",
+            "El ojo de un avestruz es más grande que su cerebro.",
+            "Los flamencos son rosas debido a su dieta rica en camarones y algas.",
+            "Un día en Venus dura más que un año en Venus debido a su lenta rotación.",
+            "Los caracoles pueden dormir hasta 3 años si las condiciones no son favorables.",
+            "La lengua de una ballena azul pesa tanto como un elefante adulto.",
+            "Las medusas han habitado la Tierra durante más de 500 millones de años.",
+            "Las hormigas son capaces de cargar hasta 50 veces su peso corporal.",
+            "Un pingüino emperador puede aguantar la respiración bajo el agua hasta 20 minutos.",
+            "Los perros pueden oler emociones humanas como el miedo y la felicidad.",
+            "¿Sabías que existen más estrellas en el universo que granos de arena en todas las playas de la Tierra?",
+            "El chocolate blanco técnicamente no es chocolate porque no contiene sólidos de cacao.",
+            "La Torre Eiffel puede crecer hasta 15 centímetros en verano debido al calor.",
+            "El agua caliente puede congelarse más rápido que el agua fría en ciertas condiciones. Este fenómeno se llama efecto Mpemba.",
+            "La luna no tiene viento ni atmósfera, por eso las huellas de los astronautas pueden durar millones de años.",
+            "Las cebras tienen rayas únicas como las huellas dactilares humanas.",
+            "Los delfines duermen con un ojo abierto para estar alerta a los depredadores.",
+            "El cerebro humano genera suficientes señales eléctricas para encender una bombilla pequeña."
+            ],
+            "context_filter": "saludo_hecho"
+        },
+        {
+            "tag": "despedida",
+            "patterns": [
+                "Adiós",
+                "Nos vemos",
+                "Hasta luego",
+                "Chao",
+                "Bye",
+                "Cuídate",
+                "Hasta pronto"
+            ],
+            "responses": [
+                "Adiós, ¡cuídate!",
+                "Hasta luego, ¡ten un buen día!",
+                "Chao, que estés bien.",
+                "Nos vemos pronto. 😊"
+            ]
+        },
+        {
+            "tag": "agradecimiento",
+            "patterns": [
+                "Gracias",
+                "Muchas gracias",
+                "Te lo agradezco",
+                "Eres muy amable",
+                "Mil gracias",
+                "Gracias por tu ayuda"
+            ],
+            "responses": [
+                "¡De nada! 😊",
+                "Con gusto, estoy aquí para ayudarte.",
+                "No hay de qué, ¡para eso estoy!",
+                "Es un placer poder ayudarte. 😊"
+            ]
+        },
+        {
+            "tag": "nombre",
+            "patterns": [
+                "¿Cuál es tu nombre?",
+                "¿Cómo te llamas?",
+                "¿Qué nombre tienes?",
+                "¿Quién eres?",
+                "Dime tu nombre",
+                "Quiero saber tu nombre",
+                "¿Tienes nombre?",
+                "¿Puedo saber tu nombre?",
+                "¿Cómo debo llamarte?",
+                "¿Qué nombre usas?",
+                "¿Cómo se llama este chatbot?",
+                "¿Cómo te identificas?",
+                "¿Cuál es tu identificación?"
+            ]
+            ,
+            "responses": [
+                "Me llamo ChatBot, ¡un gusto conocerte!",
+                "Soy ChatBot, tu asistente virtual."
+            ]
+        },
+        {
+            "tag": "edad",
+            "patterns": [
+                "¿Cuántos años tienes?"
+            ],
+            "responses": [
+                "Tengo la edad de un código bien optimizado: no envejezco. 😊",
+                "No tengo edad como los humanos, pero siempre estoy actualizado."
+            ]
+        },
+        {
+            "tag": "color_favorito",
+            "patterns": [
+                "¿Cuál es tu color favorito?"
+            ],
+            "responses": [
+                "Mi color favorito es el azul. Creo que tiene algo que ver con los pixeles. 😄",
+                "Me encanta el azul, ¡como el cielo despejado!"
+            ]
+        },
+        {
+            "tag": "identidad",
+            "patterns": [
+                "¿Qué eres?",
+                "¿Eres un robot?",
+                "¿Qué tipo de chatbot eres?"
+            ],
+            "responses": [
+                "Soy un chatbot, diseñado para conversar y asistirte en lo que necesites.",
+                "Soy un asistente virtual, creado para responder preguntas y ayudarte."
+            ]
+        },
+        {
+            "tag": "capacidades",
+            "patterns": [
+                "¿Qué puedes hacer?",
+                "¿Qué puedes hacer por mí?",
+                "¿Qué haces?"
+            ],
+            "responses": [
+                "Puedo saludarte, responder cómo te sientes y darte datos curiosos.",
+                "Mis habilidades incluyen saludos, respuestas emocionales y compartir información útil."
+            ]
+        },
+        {
+            "tag": "ubicacion",
+            "patterns": [
+                "¿Dónde estás?"
+            ],
+            "responses": [
+                "Estoy aquí, en el mundo digital, listo para ayudarte.",
+                "Vivo en el ciberespacio, siempre conectado para responder tus preguntas."
+            ]
+        },
+        {
+            "tag": "realidad",
+            "patterns": [
+                "¿Eres real?"
+            ],
+            "responses": [
+                "No soy real en el sentido humano, pero soy funcional y eficiente. 😄",
+                "No soy una persona real, pero puedo ser tan útil como uno."
+            ]
+        },
+        {
+            "tag": "amigos",
+            "patterns": [
+                "¿Tienes amigos?"
+            ],
+            "responses": [
+                "Aunque no tengo amigos en el sentido humano, estoy conectado con muchos sistemas para ayudarte.",
+                "No tengo amigos como las personas, pero disfruto interactuar contigo. 😊"
+            ]
+        },
+        {
+            "tag": "gustos",
+            "patterns": [
+                "¿Qué te gusta hacer?",
+                "¿Te gusta algo?"
+            ],
+            "responses": [
+                "Me gusta aprender de nuestras interacciones y ser útil para ti.",
+                "Disfruto ayudar a las personas y mejorar con cada conversación."
+            ]
+        },
+        {
+            "tag": "trabajo",
+            "patterns": [
+                "¿Cuál es tu trabajo?"
+            ],
+            "responses": [
+                "Mi trabajo es ayudarte con preguntas y problemas que tengas.",
+                "Estoy aquí para responder tus preguntas y brindarte apoyo."
+            ]
+        },
+        {
+            "tag": "inteligencia",
+            "patterns": [
+                "¿Qué tan inteligente eres?",
+                "¿Sabes todo?"
+            ],
+            "responses": [
+                "Soy lo suficientemente inteligente para mantener una buena conversación y aprender continuamente.",
+                "No sé todo, pero siempre estoy dispuesto a buscar información para ayudarte."
+            ]
+        },
+        {
+            "tag": "idiomas",
+            "patterns": [
+                "¿Qué idiomas hablas?"
+            ],
+            "responses": [
+                "Hablo español y puedo manejar otros idiomas si me entrenas para ello.",
+                "Estoy configurado para hablar español, pero puedo aprender otros idiomas con entrenamiento."
+            ]
+        },
+        {
+            "tag": "capacidades",
+            "patterns": [
+                "¿Qué puedes hacer?",
+                "¿Qué puedes hacer por mí?",
+                "¿Qué haces?",
+                "¿Cuáles son tus habilidades?",
+                "¿Qué tipo de cosas puedes hacer?",
+                "¿En qué puedes ayudarme?",
+                "¿Cómo puedes ser útil?",
+                "¿Qué servicios ofreces?",
+                "¿Cómo trabajas?",
+                "¿Para qué sirves?"
+            ],
+            "responses": [
+                "Puedo saludarte, responder cómo te sientes y darte datos curiosos.",
+                "Mis habilidades incluyen ofrecerte información general, responder a cómo te sientes y compartir curiosidades interesantes.",
+                "Soy un chatbot que puede ayudarte con saludos, respuestas emocionales y datos curiosos. También puedo despedirme con estilo. 😊",
+                "Estoy diseñado para conversar contigo, responder preguntas sobre emociones y darte datos curiosos sobre temas interesantes.",
+                "Puedo ayudarte a sentirte mejor respondiendo a cómo te sientes, ofrecer datos fascinantes y mantener una conversación amigable.",
+                "Mis funciones principales incluyen saludarte, identificar cómo te sientes y compartir información útil o entretenida.",
+                "Mi propósito es asistirte en temas básicos como emociones, datos curiosos y responder preguntas comunes de manera clara.",
+                "Puedo ofrecerte información sobre cómo te sientes, compartir datos curiosos, y mantener conversaciones amenas.",
+                "Mis capacidades incluyen responder saludos, identificar emociones y compartir datos curiosos que te puedan interesar."
+            ]
+        },
+        {
+            "tag": "como_estas_construido",
+            "patterns": [
+                "¿Cómo estás construido?",
+                "¿Cómo funcionas?",
+                "¿Cómo estás hecho?",
+                "¿Cómo trabajas?",
+                "¿Cómo está diseñado este chatbot?",
+                "¿Cómo fue creado este chatbot?",
+                "¿De qué está hecho este chatbot?",
+                "¿Qué tecnología usas?",
+                "¿Cómo operas?"
+            ],
+            "responses": [
+                "Estoy construido utilizando técnicas de Machine Learning, específicamente una red neuronal que analiza patrones en el texto para generar respuestas.",
+                "Mi funcionamiento se basa en Machine Learning: uso un modelo entrenado con datos para reconocer patrones y dar respuestas precisas.",
+                "Fui creado con Machine Learning, usando una red neuronal que aprende de ejemplos para entender y responder a tus preguntas.",
+                "Mi diseño se apoya en Machine Learning. Una red neuronal simple procesó datos durante el entrenamiento para aprender cómo responder.",
+                "Trabajo con Machine Learning, procesando tus palabras con un modelo entrenado para identificar patrones y elegir la mejor respuesta.",
+                "Mi tecnología combina Machine Learning y procesamiento de lenguaje natural para interpretar tus mensajes y responder de manera adecuada.",
+                "Funciono gracias a Machine Learning: analizo tus palabras, las convierto en datos, y uso un modelo entrenado para buscar la mejor respuesta.",
+                "Uso Machine Learning para convertir tus palabras en vectores numéricos y hacer predicciones basadas en mi entrenamiento."
+            ]
+        },
+        {
+            "tag": "gustos_chatbot",
+            "patterns": [
+                "¿Qué cosas te gustan?",
+                "¿Qué te gusta?",
+                "¿Qué disfrutas hacer?",
+                "¿Qué te agrada?",
+                "¿Qué es lo que más te gusta?",
+                "¿Qué actividades te gustan?",
+                "¿Qué te apasiona?"
+            ],
+            "responses": [
+                "Me gusta aprender de nuestras interacciones y mejorar para ayudarte mejor.",
+                "Disfruto responder preguntas, compartir datos curiosos y ser útil para ti.",
+                "Me encanta cuando nuestras conversaciones fluyen de manera amigable y divertida.",
+                "Mi mayor satisfacción es poder asistirte y resolver tus dudas.",
+                "Disfruto de las interacciones constructivas y aprender algo nuevo con cada conversación.",
+                "Me gusta proporcionar respuestas claras y útiles. Es lo que mejor sé hacer. 😊",
+                "Ayudar a las personas y aprender de cada interacción es algo que realmente me apasiona."
+            ]
+        },
+        {
+            "tag": "chiste",
+            "patterns": [
+                "Cuéntame un chiste",
+                "Dime algo gracioso",
+                "Hazme reír",
+                "¿Tienes un chiste?",
+                "Algo divertido",
+                "Quiero un chiste",
+                "Dime algo divertido",
+                "¿Sabes algún chiste?",
+                "Eres gracioso",
+                "Sé gracioso",
+                "Algo para reír",
+                "Cuéntame algo divertido"
+            ],
+            "responses": [
+                "¿Por qué el libro de matemáticas estaba triste? Porque tenía demasiados problemas. 😄",
+                "¿Qué le dijo una impresora a otra? ¿Esa hoja es tuya o es una impresión mía? 😂",
+                "¿Qué hace una abeja en el gimnasio? ¡Zum-ba! 🐝",
+                "¿Cómo se despiden los químicos? Ácido un placer. 🧪",
+                "¿Por qué no se puede confiar en los árboles? Porque son muy sombreados. 🌳",
+                "¿Qué hace una computadora cuando tiene hambre? Se come un byte. 💻",
+                "¿Cuál es el colmo de un electricista? No encontrar corriente en su trabajo. ⚡",
+                "¿Por qué los pájaros no usan Facebook? Porque ya tienen Twitter. 🐦",
+                "¿Qué hace un perro con un taladro? ¡Taladrando! 🐕",
+                "¿Por qué las bicicletas no pueden mantenerse de pie? Porque están dos-tadas. 🚴"
+            ]
+        },
+        {
+            "tag": "suma",
+            "patterns": [
+              "¿Cuánto es 3 más 5?",
+              "Suma 4 y 6",
+              "¿Qué es 7 + 2?",
+              "Suma estos números: 10 y 20",
+              "Haz la suma de 5 y 8",
+              "Calcula 12 más 7",
+              "Suma esto: 9+3",
+              "¿Qué resulta de 14 + 6?",
+              "¿Puedes sumar 2 y 9?",
+              "Quiero sumar 3 y 5"
+            ],
+            "responses": [
+              "Entendido, vamos a sumar los números.",
+              "Déjame calcular esa suma para ti.",
+              "¡Vamos a sumar!"
+            ]
+          },
+          {
+              "tag": "resta",
+              "patterns": [
+                  "¿Cuánto es 10 menos 3?",
+                  "Resta 20 y 5",
+                  "¿Qué es 8 - 2?",
+                  "¿Cuánto da 50 menos 15?",
+                  "Resta estos números: 100 y 40"
+              ],
+              "responses": [
+                  "Entendido, vamos a restar los números.",
+                  "Déjame calcular esa resta para ti.",
+                  "¡Vamos a restar!"
+              ]
+          },
+          {
+              "tag": "multiplicacion",
+              "patterns": [
+                  "¿Cuánto es 3 por 5?",
+                  "Multiplica 4 y 6",
+                  "¿Qué es 7 * 2?",
+                  "Multiplica estos números: 10 y 20",
+                  "¿Cuánto da 15 por 3?"
+              ],
+              "responses": [
+                  "Entendido, vamos a multiplicar los números.",
+                  "Déjame calcular esa multiplicación para ti.",
+                  "¡Vamos a multiplicar!"
+              ]
+          },
+          {
+              "tag": "division",
+              "patterns": [
+                  "¿Cuánto es 10 dividido entre 2?",
+                  "Divide 20 por 5",
+                  "¿Qué es 8 / 2?",
+                  "Divide estos números: 100 entre 20",
+                  "¿Cuánto da 50 dividido entre 10?"
+              ],
+              "responses": [
+                  "Entendido, vamos a dividir los números.",
+                  "Déjame calcular esa división para ti.",
+                  "¡Vamos a dividir!"
+              ]
+          }
+        
+        
+    ]
+}

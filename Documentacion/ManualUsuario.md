@@ -35,7 +35,7 @@ El usuario puede cargar el sitio web y verá un cuadro de texto donde puede escr
 ### Conversacion casual 
 ![alt text](2.png)
 
-### Reconocimeinto de sentimientos 
+### Reconocimiento de sentimientos 
 ![alt text](3.png)
 
 

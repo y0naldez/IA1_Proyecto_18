@@ -56,6 +56,26 @@ El usuario puede cargar el sitio web y verá un cuadro de texto donde puede escr
 ### Calculo de operaciones suma, resta, division, multiplicación. 
 ![alt text](7.png)
 
+### Respuesta de emociones en ingles
+
+![alt text](10.png)
+
+### Sugerencias de habilidades
+
+![alt text](11.png)
+
+### Continuación natural de conversación
+
+![alt text](12.png)
+
+### Cambio de idioma instantáneo
+
+![alt text](13.png)
+
+### Nueva manera de conversaciones naturales
+
+![alt text](14.png)
+
 
 ### Conocimiento de cultura general
 ![alt text](8.png)

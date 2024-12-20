@@ -452,3 +452,584 @@ print(f"[DEBUG] Vocabulario Entrenado: {palabras}")
 
 ```
 
+# Procesamiento de Palabras en Español e Inglés con JavaScript
+
+   El enfoque incluye normalización, tokenización, mapeo dinámico de raíces y la creación de un vector de bolsa de palabras.
+
+  
+
+---
+
+  
+
+## 1. Tokenización con `wink-tokenizer`
+
+  
+
+Para dividir una oración en palabras, utilizamos la librería `wink-tokenizer`. El código inicializa un tokenizador y define funciones para procesar palabras:
+
+  
+
+```javascript
+
+import  winkTokenizer  from  'wink-tokenizer';
+
+  
+
+const  tokenizer = new  winkTokenizer();
+
+```
+
+  
+
+---
+
+  
+
+## 2. Normalización de Palabras
+
+  
+
+La función `normalizarToken` convierte palabras a minúsculas y elimina acentos para uniformizar los tokens, facilitando su comparación.
+
+  
+
+```javascript
+
+/**
+
+* Normaliza un token para comparación (elimina tildes, pasa a minúsculas).
+
+* @param  {string}  token - Token a normalizar.
+
+* @returns  {string} - Token normalizado.
+
+*/
+
+const  normalizarToken = (token) =>
+
+token.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+```
+
+  
+
+### Ejemplo:
+
+Entrada: `"Avión"`
+
+Salida: `"avion"`
+
+  
+
+---
+
+  
+
+## 3. Búsqueda de Raíces en el Vocabulario
+
+  
+
+La función `encontrarRaizDinamica` busca la forma más relevante de una palabra en un vocabulario conocido. Esto incluye coincidencias exactas, búsqueda de prefijos y formas con prefijos `##`.
+
+  
+
+```javascript
+
+/**
+
+* Encuentra la raíz más relevante en el vocabulario, considerando prefijos.
+
+* @param  {string}  token - La palabra a buscar.
+
+* @param  {Set<string>}  vocabulario - Un conjunto de palabras conocidas (para eficiencia).
+
+* @returns  {string} - La raíz más cercana encontrada en el vocabulario o el token original.
+
+*/
+
+const  encontrarRaizDinamica = (token, vocabulario) => {
+
+const  tokenNormalizado = normalizarToken(token);
+
+  
+
+if (vocabulario.has(tokenNormalizado)) {
+
+return  tokenNormalizado;
+
+}
+
+  
+
+for (let  i = tokenNormalizado.length; i > 0; i--) {
+
+const  prefijo = tokenNormalizado.slice(0, i);
+
+if (vocabulario.has(prefijo)) {
+
+return  prefijo;
+
+}
+
+}
+
+  
+
+for (let  item  of  vocabulario) {
+
+if (item.startsWith('##') && item.slice(2) === tokenNormalizado) {
+
+return  item;
+
+}
+
+}
+
+  
+
+return  tokenNormalizado;
+
+};
+
+```
+
+  
+
+---
+
+  
+
+## 4. División en Palabras y Mapeo de Raíces
+
+  
+
+La función `dividirEnPalabras` tokeniza una oración y convierte cada palabra a su raíz más relevante.
+
+  
+
+```javascript
+
+/**
+
+* Divide una oración en palabras y aplica un mapeo dinámico de raíces.
+
+* @param  {string}  oracion - La entrada del usuario.
+
+* @param  {string[]}  palabrasConocidas - Lista de palabras en el vocabulario.
+
+* @returns  {string[]} - Lista de raíces de las palabras (tokens procesados).
+
+*/
+
+export  const  dividirEnPalabras = (oracion, palabrasConocidas) => {
+
+const  vocabulario = new  Set(palabrasConocidas.map(normalizarToken));
+
+const  tokens = tokenizer.tokenize(oracion.toLowerCase())
+
+.filter(token  =>  token.tag === 'word' || token.tag === 'number')
+
+.map(token  =>  token.value);
+
+  
+
+const  tokensConRaices = tokens.map(token  =>  encontrarRaizDinamica(token, vocabulario));
+
+  
+
+console.log(`[DEBUG] Tokens originales: ${tokens}`);
+
+console.log(`[DEBUG] Tokens con raíces: ${tokensConRaices}`);
+
+return  tokensConRaices;
+
+};
+
+```
+
+  
+
+---
+
+  
+
+## 5. Creación de un Vector de Bolsa de Palabras
+
+  
+
+La función `vectorBolsaDePalabras` genera un vector binario indicando la presencia de cada palabra del vocabulario en los tokens procesados.
+
+  
+
+```javascript
+
+/**
+
+* Convierte una lista de raíces en un vector de bolsa de palabras.
+
+* @param  {string[]}  tokens - Raíces de las palabras procesadas.
+
+* @param  {string[]}  palabrasConocidas - Palabras del vocabulario.
+
+* @returns  {number[]} - Vector de bolsa de palabras.
+
+*/
+
+export  const  vectorBolsaDePalabras = (tokens, palabrasConocidas) => {
+
+const  palabrasNormalizadas = palabrasConocidas.map(palabra  =>  palabra.toLowerCase());
+
+const  vector = Array(palabrasNormalizadas.length).fill(0);
+
+  
+
+tokens.forEach(token  => {
+
+const  tokenNormalizado = token.toLowerCase();
+
+  
+
+let  indice = palabrasNormalizadas.indexOf(tokenNormalizado);
+
+  
+
+if (indice === -1) {
+
+indice = palabrasNormalizadas.indexOf(`##${tokenNormalizado}`);
+
+}
+
+  
+
+if (indice !== -1) {
+
+vector[indice] = 1;
+
+console.log(`[DEBUG] Token "${token}" encontrado en índice ${indice}`);
+
+} else {
+
+console.warn(`[DEBUG] Token "${token}" no encontrado en el vocabulario`);
+
+}
+
+});
+
+  
+
+console.log(`[DEBUG] Vector de bolsa de palabras generado: ${vector}`);
+
+return  vector;
+
+};
+
+```
+
+  
+
+### Ejemplo:
+
+-  **Entrada Tokens**: `["hola", "mundo"]`
+
+-  **Vocabulario**: `["hola", "mundo", "adios"]`
+
+-  **Vector Generado**: `[1, 1, 0]`
+
+  
+
+---
+
+  
+
+## 6. Flujo del Proceso
+
+  
+
+1.  **Entrada del Usuario**: Una oración o frase.
+
+2.  **Tokenización**: División en palabras.
+
+3.  **Normalización**: Eliminar acentos y convertir a minúsculas.
+
+4.  **Mapeo de Raíces**: Buscar formas relevantes en el vocabulario.
+
+5.  **Bolsa de Palabras**: Generar un vector indicando la presencia de cada palabra en la entrada.
+
+  
+
+---
+
+  
+    
+
+# Entrenamiento del Chatbot en Google Colab
+
+  
+
+Este documento explica el enfoque utilizado para entrenar el modelo de chatbot en Google Colab. Se destacan las herramientas elegidas, incluyendo la lematización para inglés, el stemming para español y el tokenizador multilingüe de Hugging Face.
+
+  
+
+---
+
+  
+
+## ¿Por qué se usaron estas herramientas específicas?
+
+  
+
+1.  **Lematizador (Inglés):** Se utilizó el `WordNetLemmatizer` de NLTK por su eficiencia para manejar palabras en inglés, ya que ayuda a reducir las palabras a su forma base en el diccionario.
+
+2.  **Stemmer (Español):** El `SnowballStemmer` es eficiente para manejar formas flexionadas en español, simplificando la gestión del vocabulario.
+
+3.  **Tokenizador de Hugging Face:** Se empleó el tokenizador `bert-base-multilingual-cased` por su robustez para manejar múltiples idiomas, proporcionando salidas tokenizadas que soportan tanto texto en español como en inglés.
+
+4.  **Optimización:** Operaciones de TensorFlow como tensores irregulares (`ragged tensors`) y comparaciones vectorizadas aceleran significativamente la generación de vectores de bolsa de palabras, especialmente para datos por lotes.
+
+  
+
+---
+
+  
+
+## Explicación del Código
+
+  
+
+### Importación de Librerías
+
+  
+
+```python
+
+import json
+
+import numpy as np
+
+import tensorflow as tf
+
+from nltk.stem.snowball import SnowballStemmer
+
+from nltk.stem import WordNetLemmatizer
+
+from tqdm import tqdm
+
+from langdetect import detect
+
+from tokenizers import Tokenizer
+
+from tokenizers.pre_tokenizers import Whitespace
+
+```
+
+  
+
+### Inicialización del Tokenizador, Stemmer y Lematizador
+
+  
+
+```python
+
+# Stemmer para español y lematizador para inglés
+
+stemmer_es = SnowballStemmer("spanish")
+
+lemmatizer_en = WordNetLemmatizer()
+
+  
+
+# Tokenizador de Hugging Face
+
+tokenizer = Tokenizer.from_pretrained("bert-base-multilingual-cased")
+
+tokenizer.pre_tokenizer = Whitespace()
+
+```
+
+  
+
+---
+
+  
+
+## Funciones Clave
+
+  
+
+### Tokenización y Depuración
+
+  
+
+El tokenizador divide las oraciones en tokens y los datos de depuración se almacenan para inspección posterior.
+
+  
+
+```python
+
+def  dividir_en_palabras_lote(oraciones):
+
+resultados = [tokenizer.encode(oracion.lower()).tokens for oracion in oraciones]
+
+for oracion, tokens in  zip(oraciones, resultados):
+
+datos_debug["tokens"].append({"oracion": oracion, "tokens": tokens})
+
+guardar_debug()
+
+return resultados
+
+```
+
+  
+
+### Generación de Raíces por Lote
+
+  
+
+Dependiendo del idioma detectado, las palabras se procesan con el stemmer para español o el lematizador para inglés.
+
+  
+
+```python
+
+def  obtener_raices_lote_optimizado(oraciones_tokenizadas, idioma="spanish"):
+
+excepciones = set(["suma", "resta", "multiplicacion", "add", "subtract", "multiply", "division", "divide", "+", "-", "*", "/"])
+
+raices = []
+
+  
+
+if idioma == "spanish":
+
+for oracion in oraciones_tokenizadas:
+
+raices.append([stemmer_es.stem(palabra) if palabra not  in excepciones else palabra for palabra in oracion])
+
+elif idioma == "english":
+
+for oracion in oraciones_tokenizadas:
+
+raices.append([lemmatizer_en.lemmatize(palabra) if palabra not  in excepciones else palabra for palabra in oracion])
+
+else:
+
+raise  ValueError(f"Idioma '{idioma}' no soportado.")
+
+  
+
+return raices
+
+```
+
+  
+
+---
+
+  
+
+## Entrenamiento del Modelo
+
+  
+
+El modelo utiliza una red neuronal con capas densas y dropout para evitar sobreajuste. Se entrenó utilizando los vectores de bolsa de palabras generados a partir de las raíces procesadas.
+
+  
+
+### Creación de Vectores de Bolsa de Palabras
+
+  
+
+```python
+
+def  vector_bolsa_de_palabras_lote_optimizado(oraciones_tokenizadas, palabras_conocidas, idioma="spanish"):
+
+raices_por_oracion = obtener_raices_lote_optimizado(oraciones_tokenizadas, idioma)
+
+  
+
+palabras_conocidas_tf = tf.constant(palabras_conocidas, dtype=tf.string)
+
+raices_por_oracion_tf = tf.ragged.constant(raices_por_oracion, dtype=tf.string)
+
+  
+
+comparaciones = tf.equal(raices_por_oracion_tf[:, :, None], palabras_conocidas_tf[None, None, :])
+
+vectores = tf.reduce_any(comparaciones, axis=1)
+
+vectores = tf.cast(vectores, dtype=tf.float32)
+
+  
+
+return vectores.numpy()
+
+```
+
+  
+
+### Definición del Modelo
+
+  
+
+```python
+
+modelo = tf.keras.Sequential([
+
+tf.keras.layers.Dense(128, input_shape=(len(entradas[0]),), activation='relu'),
+
+tf.keras.layers.Dropout(0.5),
+
+tf.keras.layers.Dense(64, activation='relu'),
+
+tf.keras.layers.Dropout(0.5),
+
+tf.keras.layers.Dense(len(etiquetas), activation='softmax')
+
+])
+
+  
+
+modelo.compile(loss='categorical_crossentropy', optimizer=tf.keras.optimizers.Adam(learning_rate=0.001), metrics=['accuracy'])
+
+```
+
+  
+
+---
+
+  
+
+## Resultados y Guardado
+
+  
+
+1.  **Vocabulario:** Se guarda en un archivo JSON para su reutilización.
+
+2.  **Modelo:** Exportado en formato `SavedModel` para facilitar su despliegue.
+
+  
+
+```python
+
+with  open("vocabulario.json", "w") as archivo:
+
+json.dump({"palabras": palabras, "etiquetas": etiquetas}, archivo, indent=4, ensure_ascii=False)
+
+  
+
+modelo.export("modelo_chatbot_tf")
+
+print("Modelo guardado como SavedModel en 'modelo_chatbot_tf'")
+
+```
+
+  
+
+---
+
+  
+
+Este enfoque permite procesar múltiples idiomas de manera eficiente y entrenar el chatbot optimizado para tareas específicas.
+

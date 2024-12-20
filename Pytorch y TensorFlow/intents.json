@@ -7152,7 +7152,11 @@
               "¿Qué música rock me recomiendas?",
               "Recomendame canciones de rock",
               "¿Qué canciones de rock están buenas?",
-              "¿Podrías recomendarme algo de rock?"
+              "¿Podrías recomendarme algo de rock?",
+              "recomiendame musica rock",
+              "dame otra cancion de rock",
+              "dime otra cancion de rock",
+              "otra cancion de rock"
             ],
             "responses": [
               "Si te gusta el rock, te recomiendo: 'Bohemian Rhapsody' de Queen, 'Hotel California' de Eagles, 'Back in Black' de AC/DC, 'Smells Like Teen Spirit' de Nirvana y 'Stairway to Heaven' de Led Zeppelin.",
@@ -7172,7 +7176,13 @@
                 "What rock music do you recommend?",
                 "Recommend me rock songs",
                 "What rock songs are good?",
-                "Could you recommend me some rock?"
+                "Could you recommend me some rock?",
+                "give me some a rock song",
+                "give me another rock song",
+                "give me other rock song",
+                "Gimme a rock song",
+                "gimme another rock song",
+                "gimme other rock song"
             ],
             "responses": [
                 "If you like rock, I recommend: *Bohemian Rhapsody* by Queen, *Hotel California* by Eagles, *Back in Black* by AC/DC, *Smells Like Teen Spirit* by Nirvana, and *Stairway to Heaven* by Led Zeppelin.",
@@ -7193,7 +7203,11 @@
               "¿Qué música pop me recomiendas?",
               "Recomendame canciones de pop",
               "¿Qué canciones pop están buenas?",
-              "¿Podrías recomendarme algo de pop?"
+              "¿Podrías recomendarme algo de pop?",
+              "recomiendame musica pop",
+              "dame otra cancion de pop",
+              "dime otra cancion de pop",
+              "otra cancion de pop"
             ],
             "responses": [
               "Si te gusta el pop, te recomiendo: 'Blinding Lights' de The Weeknd, 'Levitating' de Dua Lipa, 'Shape of You' de Ed Sheeran, 'Bad Guy' de Billie Eilish y 'Uptown Funk' de Mark Ronson ft. Bruno Mars.",
@@ -7213,7 +7227,11 @@
               "¿Qué música tranquila me recomiendas?",
               "Recomendame canciones para relajarme",
               "¿Qué canciones relajantes están buenas?",
-              "¿Podrías recomendarme algo para relajarme?"
+              "¿Podrías recomendarme algo para relajarme?",
+              "recomiendame musica tranquila",
+              "dame otra cancion tranquila",
+              "dime otra cancion tranquila",
+              "otra cancion tranquila"
             ],
             "responses": [
               "Si querés algo tranquilo, te recomiendo: 'Shape of My Heart' de Sting, 'Breathe Me' de Sia, 'Hallelujah' de Jeff Buckley, 'The Night We Met' de Lord Huron y 'Gravity' de John Mayer.",
@@ -7236,7 +7254,11 @@
               "¿Qué música latina me recomiendas?",
               "Recomendame canciones latinas",
               "¿Qué canciones latinas están buenas?",
-              "¿Podrías recomendarme algo de música latina?"
+              "¿Podrías recomendarme algo de música latina?",
+              "recomiendame musica latina",
+              "dame otra cancion latina",
+              "dime otra cancion latina",
+              "otra cancion latina"
             ],
             "responses": [
               "Si te gusta la música latina, escuchá: 'La Bicicleta' de Shakira y Carlos Vives, 'Despacito' de Luis Fonsi, 'Vivir Mi Vida' de Marc Anthony, 'Bailando' de Enrique Iglesias y 'Tití Me Preguntó' de Bad Bunny.",
@@ -7256,7 +7278,13 @@
                 "What pop music do you recommend?",
                 "Recommend me pop songs",
                 "What pop songs are good?",
-                "Could you recommend me some pop?"
+                "Could you recommend me some pop?",
+                "give me some a pop song",
+                "give me another pop song",
+                "give me other pop song",
+                "Gimme a pop song",
+                "gimme another pop song",
+                "gimme other pop song"
             ],
             "responses": [
                 "If you like pop, I recommend: *Blinding Lights* by The Weeknd, *Levitating* by Dua Lipa, *Shape of You* by Ed Sheeran, *Bad Guy* by Billie Eilish, and *Uptown Funk* by Mark Ronson ft. Bruno Mars.",
@@ -7276,7 +7304,13 @@
                 "What calm music do you recommend?",
                 "Recommend me songs to relax",
                 "What relaxing songs are good?",
-                "Could you recommend me something to relax?"
+                "Could you recommend me something to relax?",
+                "give me some calm music",
+                "give me another calm song",
+                "give me other calm song",
+                "Gimme calm songs",
+                "gimme another calm song",
+                "gimme other calm song"
             ],
             "responses": [
                 "If you’re looking for something calm, I recommend: *Shape of My Heart* by Sting, *Breathe Me* by Sia, *Hallelujah* by Jeff Buckley, *The Night We Met* by Lord Huron, and *Gravity* by John Mayer.",
@@ -7299,7 +7333,15 @@
                 "What Latin music do you recommend?",
                 "Recommend me Latin songs",
                 "What Latin songs are good?",
-                "Could you recommend me some Latin music?"
+                "Could you recommend me some Latin music?",
+                "give me some latin music",
+                "give me another latin song",
+                "give me other latin song",
+                "Gimme a latin song",
+                "gimme another latin song",
+                "gimme other latin song",
+                "other latin song"
+
             ],
             "responses": [
                 "If you like Latin music, try: *La Bicicleta* by Shakira and Carlos Vives, *Despacito* by Luis Fonsi, *Vivir Mi Vida* by Marc Anthony, *Bailando* by Enrique Iglesias, and *Tití Me Preguntó* by Bad Bunny.",
@@ -8016,8 +8058,6 @@
                 "Selecciono Netflix",
                 "Escojo Netflix",
                 "Mejor Netflix",
-                "Netflix",
-                "Flix",
                 "de netflix",
                 "Prefiero Netflix",
                 "Quiero ver algo en Netflix",
@@ -8043,13 +8083,8 @@
                 "Selecciono Prime Video",
                 "Escojo Prime Video",
                 "Mejor Prime Video",
-                "Prime Video",
-                "de amazon",
                 "de prime video",
                 "de amazon prime",
-                "Prime",
-                "Amazon Prime",
-                "Amazon",
                 "Prefiero Prime Video",
                 "Quiero ver algo en Prime Video",
                 "Prime Video es mi elección",
@@ -8077,8 +8112,6 @@
                   "de disney",
                   "de disney plus",
                   "del raton",
-                  "Disney Plus",
-                  "Disney",
                   "Prefiero Disney Plus",
                   "Quiero ver algo en Disney Plus",
                   "Disney Plus es mi elección",
@@ -8104,10 +8137,6 @@
                   "Prefiero Hulu",
                   "Escojo Apple TV",
                   "Mejor HBO",
-                  "Hulu",
-                  "HBO",
-                  "Apple TV",
-                  "Peacock",
                   "Quiero ver algo en HBO",
                   "Dame algo de Hulu",
                   "Voy con HBO Max",
@@ -8139,7 +8168,6 @@
                   "I select Netflix",
                   "I pick Netflix",
                   "Netflix is better",
-                  "Netflix",
                   "Flix",
                   "from Netflix",
                   "I prefer Netflix",
@@ -8166,13 +8194,9 @@
                   "I select Prime Video",
                   "I pick Prime Video",
                   "Prime Video is better",
-                  "Prime Video",
                   "from Amazon",
                   "from Prime Video",
                   "from Amazon Prime",
-                  "Prime",
-                  "Amazon Prime",
-                  "Amazon",
                   "I prefer Prime Video",
                   "I want to watch something on Prime Video",
                   "Prime Video is my choice",
@@ -8200,8 +8224,6 @@
                   "from Disney",
                   "from Disney Plus",
                   "from the mouse",
-                  "Disney Plus",
-                  "Disney",
                   "I prefer Disney Plus",
                   "I want to watch something on Disney Plus",
                   "Disney Plus is my choice",
@@ -8226,11 +8248,6 @@
                   "I select HBO Max",
                   "I prefer Hulu",
                   "I pick Apple TV",
-                  "HBO is better",
-                  "Hulu",
-                  "HBO",
-                  "Apple TV",
-                  "Peacock",
                   "I want to watch something on HBO",
                   "Give me something from Hulu",
                   "I’m going with HBO Max",
@@ -14925,9 +14942,9 @@
         {
           "tag": "informacion_guatemala",
           "patterns": [
-            "hola, ¿puedes ayudarme con informacion sobre guatemala?",
+            "¿puedes ayudarme con informacion sobre guatemala?",
             "podrias ayudarme con informacion sobre guatemala",
-            "hola, ¿puedes ayudarme con informacion de guatemala?",
+            "¿puedes ayudarme con informacion de guatemala?",
             "podrias ayudarme con informacion de guatemala",
             "podrias darme informacion sobre guatemala",
             "podrias darme informacion de guatemala",
@@ -14950,11 +14967,11 @@
             "cuantame sobre guatemala",
             "dime que sabes sobre guatemala",
             "cuentame que sabes sobre guatemala",
-            "hola, necesito informacion sobre guatemala",
+            "necesito informacion sobre guatemala",
             "puedes darme datos de guatemala",
             "dime informacion sobre guatemala",
             "que sabes de guatemala",
-            "hola, ¿que me puedes contar de guatemala?",
+            "¿que me puedes contar de guatemala?",
             "puedes contarme sobre guatemala",
             "quiero aprender sobre guatemala",
             "necesito datos sobre guatemala",
@@ -14975,21 +14992,17 @@
             "necesito datos de guatemala"
           ],
           "responses": [
-            "Claro que sí. Guatemala es un país hermoso lleno de cultura, historia y paisajes increíbles. ¿Qué te interesa saber? Puedes escoger entre:",
-            "Lugares turísticos imperdibles",
-            "La deliciosa gastronomía local",
-            "Consejos sobre transporte y cómo moverte",
-            "Historia y datos culturales",
-            "Elige el tema que más te interese, y con gusto te doy más detalles."
+            "claro que sí. guatemala es un país hermoso lleno de cultura, historia y paisajes increíbles. ¿qué te interesa saber? puedes escoger entre: lugares turísticos imperdibles, la deliciosa gastronomía local, consejos sobre transporte y cómo moverte, historia y datos culturales. elige el tema que más te interese, y con gusto te doy más detalles."
           ]
+
 
         },
         {
           "tag": "guatemala_information",
           "patterns": [
-            "hi can you help me with information about guatemala?",
+            "can you help me with information about guatemala?",
             "could you help me with information about guatemala?",
-            "hi can you assist me with guatemala information?",
+            "can you assist me with guatemala information?",
             "could you assist me with guatemala information?",
             "could you give me information about guatemala?",
             "could you provide information about guatemala?",
@@ -15015,7 +15028,7 @@
             "what do you know about guatemala?",
             "tell me about guatemala",
             "tell me what you know about guatemala",
-            "hi i need information about guatemala",
+            "i need information about guatemala",
             "can you provide details about guatemala?",
             "tell me details about guatemala",
             "what do you know about guatemala?",
@@ -15029,7 +15042,7 @@
             "what do you know about guatemala?",
             "tell me about guatemala",
             "tell me what you know about guatemala",
-            "hi i need guatemala information",
+            "i need guatemala information",
             "can you give me details about guatemala?",
             "tell me guatemala details",
             "what do you know about guatemala?",
@@ -15039,14 +15052,9 @@
             "i need guatemala details"
           ],
           "responses": [
-            "of course. guatemala is a beautiful country full of culture, history, and incredible landscapes. what are you interested in? you can choose from:",
-            "must-see tourist destinations",
-            "delicious local cuisine",
-            "transport tips and how to get around",
-            "history and cultural facts",
-            "choose the topic that interests you the most, and i'll gladly provide more details.",
-            "choose the topic that interests you the most, and i will gladly provide more details."
+            "of course. guatemala is a beautiful country full of culture, history, and incredible landscapes. what are you interested in? you can choose from: must-see tourist destinations, delicious local cuisine, transport tips and how to get around, history and cultural facts. choose the topic that interests you the most, and i'll gladly provide more details."
           ]
+
         },
         
 

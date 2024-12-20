@@ -1,4 +1,4 @@
-# **Manual Tecnico Proyecto Fase 1 Inteligencia Artificial 1**
+# **Manual Tecnico Proyecto Fase 2 Inteligencia Artificial 1**
 
 ## **Introducción**
 En este documento se describe los aspectos técnicos informáticos de la aplicación de escritorio, de manera que cualquier técnico informático pueda entender y comprender la lógica dentro del programa, para así poder darle mantenimiento y actualizarla si es necesario.

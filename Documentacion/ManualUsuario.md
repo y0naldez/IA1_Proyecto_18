@@ -81,3 +81,64 @@ El usuario puede cargar el sitio web y verá un cuadro de texto donde puede escr
 ![alt text](8.png)
 
 ![alt text](9.png)
+
+
+
+# Fase 3 proyecto chat bot
+
+- Saludo con el usuario reconocimiento de sentimientos
+
+![alt text](image.png)
+
+- Interacción con el usuario reconocimiento de sentimientos
+
+![alt text](image-1.png)
+
+- Codigo para invertir texto en Pytho y Js
+
+![alt text](image-2.png)
+
+- Generar codigo fibonacci Py y Js 
+
+![alt text](image-3.png)
+
+- Verificación de numero primo 
+
+![alt text](image-4.png)
+
+- Codigo para maximo comun divisor 
+
+![alt text](image-5.png)
+
+- Codigo Maximo comun divisor
+
+![alt text](image-6.png)
+
+- Codigo minimo comun multiplo 
+
+![alt text](image-7.png)
+
+- Codigo para potenciacion de numeros 
+
+![alt text](image-8.png)
+
+- Codigo para generar promedios 
+
+![alt text](image-9.png)
+
+- Codigo para sumar elementos 
+
+![alt text](image-10.png)
+
+- Codigo para contar palabras 
+
+![alt text](image-11.png)
+
+- Codigo para convertir a mayusculas 
+![alt text](image-12.png)
+
+- COdigo para contar vocales 
+![alt text](image-13.png)
+
+- Codigo para verificar polidromos 
+![alt text](image-14.png)

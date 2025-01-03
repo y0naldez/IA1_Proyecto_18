@@ -86,77 +86,63 @@ El usuario puede cargar el sitio web y verá un cuadro de texto donde puede escr
 
 # Fase 3 proyecto chat bot
 
-<p align="center">Saludo con el usuario reconocimiento de sentimientos</p>
-<p align="center">
-  ![alt text](image.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Saludo con el usuario reconocimiento de sentimientos** | ![alt text](image.png) |
 
-<p align="center">Interacción con el usuario reconocimiento de sentimientos</p>
-<p align="center">
-  ![alt text](image-1.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Interacción con el usuario reconocimiento de sentimientos** | ![alt text](image-1.png) |
 
-<p align="center">Codigo para invertir texto en Python y JS</p>
-<p align="center">
-  ![alt text](image-2.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Codigo para invertir texto en Python y JS** | ![alt text](image-2.png) |
 
-<p align="center">Generar codigo fibonacci Py y Js</p>
-<p align="center">
-  ![alt text](image-3.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Generar codigo fibonacci Py y Js** | ![alt text](image-3.png) |
 
-<p align="center">Verificación de numero primo</p>
-<p align="center">
-  ![alt text](image-4.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Verificación de numero primo** | ![alt text](image-4.png) |
 
-<p align="center">Codigo para maximo comun divisor</p>
-<p align="center">
-  ![alt text](image-5.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Codigo para maximo comun divisor** | ![alt text](image-5.png) |
 
-<p align="center">Codigo Maximo comun divisor</p>
-<p align="center">
-  ![alt text](image-6.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Codigo Maximo comun divisor** | ![alt text](image-6.png) |
 
-<p align="center">Codigo minimo comun multiplo</p>
-<p align="center">
-  ![alt text](image-7.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Codigo minimo comun multiplo** | ![alt text](image-7.png) |
 
-<p align="center">Codigo para potenciacion de numeros</p>
-<p align="center">
-  ![alt text](image-8.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Codigo para potenciacion de numeros** | ![alt text](image-8.png) |
 
-<p align="center">Codigo para generar promedios</p>
-<p align="center">
-  ![alt text](image-9.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Codigo para generar promedios** | ![alt text](image-9.png) |
 
-<p align="center">Codigo para sumar elementos</p>
-<p align="center">
-  ![alt text](image-10.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Codigo para sumar elementos** | ![alt text](image-10.png) |
 
-<p align="center">Codigo para contar palabras</p>
-<p align="center">
-  ![alt text](image-11.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Codigo para contar palabras** | ![alt text](image-11.png) |
 
-<p align="center">Codigo para convertir a mayusculas</p>
-<p align="center">
-  ![alt text](image-12.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Codigo para convertir a mayusculas** | ![alt text](image-12.png) |
 
-<p align="center">Codigo para contar vocales</p>
-<p align="center">
-  ![alt text](image-13.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Codigo para contar vocales** | ![alt text](image-13.png) |
 
-<p align="center">Codigo para verificar polidromos</p>
-<p align="center">
-  ![alt text](image-14.png)
-</p>
+| Texto | Imagen |
+|-------|--------|
+| **Codigo para verificar polidromos** | ![alt text](image-14.png) |
+

@@ -1033,3 +1033,737 @@ print("Modelo guardado como SavedModel en 'modelo_chatbot_tf'")
 
 Este enfoque permite procesar múltiples idiomas de manera eficiente y entrenar el chatbot optimizado para tareas específicas.
 
+
+
+# Fase 3 Proyecto
+
+- Para ejecutar en windows editar esta linea en el archivo chat.py 
+![alt text](image-4.png)
+```
+def cargar_datos_modelo(ruta_intents, ruta_modelo):
+    with open(ruta_intents, 'r', encoding='utf-8') as archivo:
+        intenciones = json.load(archivo)
+```
+
+## Librerias necesarias 
+```
+PyTorch
+
+pip install torch torchvision torchaudio
+
+spaCy
+
+pip install spacy
+python -m spacy download es_core_news_sm
+
+Lark Parser
+
+pip install lark-parser
+
+NLTK
+
+pip install nltk
+
+Tkinter (para interfaces gráficas)
+Tkinter suele estar incluido con Python, pero si no lo tienes, puedes instalarlo con:
+
+sudo apt install python3-tk  # Para Linux
+
+En Windows, viene incluido con la instalación de Python.
+
+rapidfuzz (para coincidencia difusa)
+
+pip install rapidfuzz
+
+pip install langdetect
+
+```
+- La función detectar_intent_fuzzy compara un texto de usuario con patrones predefinidos de intenciones utilizando coincidencia difusa (fuzzy matching). Calcula la similitud entre el texto del usuario y los patrones, y si la similitud más alta supera un umbral (por defecto 70), devuelve la etiqueta de la intención correspondiente. Si no se encuentra una coincidencia suficiente, retorna None.
+![alt text](image.png)
+
+
+- La función extraer_condicion_natural_spacy utiliza la librería spaCy para analizar un texto de entrada proporcionado por el usuario y extraer información sobre una posible condición, como una variable, operador, valor y los mensajes asociados a un bloque condicional. Primero, convierte el texto a minúsculas y lo procesa con spaCy. Luego, busca palabras clave como "variable" o "numero" y extrae el nombre de la variable correspondiente, gestionando comillas si las hay. Este proceso es parte de la detección de una estructura condicional, aunque el código mostrado solo cubre la extracción de la variable.
+
+![alt text](image-1.png)    
+
+
+
+- Este código define un proceso para analizar una condición escrita en lenguaje natural, extrayendo una variable, un operador, un valor y mensajes asociados a una estructura condicional. Primero, detecta palabras clave como "variable" o "numero" y extrae la variable correspondiente, limpiando las comillas si es necesario. Luego, identifica el operador lógico basado en frases comunes como "mayor que" o "igual a". Después, detecta valores numéricos en el texto y selecciona el primero como el valor de la condición, evitando que una variable numérica se repita. A continuación, busca posibles mensajes de impresión en el texto, como "imprime" o "imprima", y asigna estos mensajes a las partes "if" y "else". Finalmente, valida que la variable, operador y valor estén presentes y devuelve un diccionario con estos elementos, junto con los mensajes correspondientes. Si alguna de las partes faltara, retorna None.
+  
+
+```
+# --- 1) Detectar "variable" o "numero" ---
+    for i, token in enumerate(doc):
+        if token.text in ["variable", "numero"]:
+            # Verificamos si la siguiente palabra es comilla
+            if i+2 < len(doc) and doc[i+1].text in ['"', "'"]:
+                variable = doc[i+2].text
+            else:
+                if i+1 < len(doc):
+                    variable = doc[i+1].text
+                else:
+                    variable = None
+
+            # Limpieza de comillas
+            if variable:
+                variable = variable.replace('"', '').replace("'", "")
+
+    # --- 2) Detectar operador ---
+    entrada_lower = entrada_usuario.lower()
+
+    if "mayor o igual que" in entrada_lower or "mayor o igual a" in entrada_lower:
+        operador = ">="
+    elif "menor o igual que" in entrada_lower or "menor o igual a" in entrada_lower:
+        operador = "<="
+    elif ("diferente a" in entrada_lower 
+        or "distinto a" in entrada_lower
+        or "distinto de" in entrada_lower):
+        operador = "!="
+    elif "mayor que" in entrada_lower or "mayor a" in entrada_lower:
+        operador = ">"
+    elif "menor que" in entrada_lower or "menor a" in entrada_lower:
+        operador = "<"
+    elif "igual a" in entrada_lower:
+        operador = "=="
+
+
+    # --- 3) Detectar valor (número) ---
+    num_list = [t.text for t in doc if t.like_num]
+
+    # Si la "variable" es un número y está en esa lista, la removemos
+    # para no volver a usarla como valor
+    if variable and variable.isdigit() and variable in num_list:
+        num_list.remove(variable)
+
+    # Ahora, si todavía queda al menos un número en la lista,
+    # tomamos el primero como el "valor"
+    if len(num_list) > 0:
+        valor = num_list[0]
+    else:
+        valor = None
+
+    # --- 4) Detectar mensajes "imprima" / "imprime" ---
+    import re
+    patron_prints = re.findall(r'(?:imprime|imprima)\s+"([^"]+)"', entrada_lower)
+    # El patrón busca:  'imprime' o 'imprima', espacio, comillas, luego el texto, cierra comillas
+    # Ej: 'imprima "es mayor"'
+
+    if len(patron_prints) == 1:
+        mensaje_if = patron_prints[0]
+    elif len(patron_prints) >= 2:
+        mensaje_if = patron_prints[0]
+        mensaje_else = patron_prints[1]
+
+    # 5) Si no encontramos uno de los mensajes, ponemos valores por defecto
+    if not mensaje_if:
+        if operador in [">", ">=", "!="]:
+            mensaje_if = "es mayor"
+        else:
+            mensaje_if = "cumple la condición"
+
+    if not mensaje_else:
+        if operador in [">", ">=", "!="]:
+            mensaje_else = "es menor"
+        else:
+            mensaje_else = "no cumple la condición"
+
+    # 6) Validar que variable, operador y valor estén presentes
+    if not variable or not operador or not valor:
+        return None
+
+    return {
+        "variable": variable,
+        "operador": operador,
+        "valor": valor,
+        "mensaje_if": mensaje_if,
+        "mensaje_else": mensaje_else
+    }
+
+```
+
+
+```
+def generar_codigo_if_natural(entrada_usuario):
+    datos = extraer_condicion_natural_spacy(entrada_usuario)
+    if not datos:
+        return "No pude entender bien la condición. Asegúrate de especificar variable, operador, valor y mensajes."
+
+    variable = datos["variable"]
+    operador = datos["operador"]
+    valor = datos["valor"]
+    mensaje_if = datos["mensaje_if"]
+    mensaje_else = datos["mensaje_else"]
+    
+    # Construir el bloque de código en Python
+    codigo = f"""if {variable} {operador} {valor}:
+    print("{mensaje_if}")
+else:
+    print("{mensaje_else}")"""
+    
+    return f"Aquí tienes tu bloque de código:\n\n```python\n{codigo}\n```"
+
+ALGORITMOS_CODIGO = {
+    # Ordenamientos
+    "burbuja": "bubble_sort",
+    "bubble sort": "bubble_sort",
+    "ordenamiento burbuja": "bubble_sort",
+    "ordenar por burbuja": "bubble_sort",
+    "bubble": "bubble_sort",
+    "sort by bubble": "bubble_sort",
+    "perform bubble sort": "bubble_sort",
+    "do bubble sort": "bubble_sort",
+    "use bubble sort": "bubble_sort",
+
+    "quicksort": "quick_sort",
+    "insercion": "insertion_sort",
+    "insertion sort": "insertion_sort",
+    "seleccion": "selection_sort",
+    "selection sort": "selection_sort",
+    
+
+    # Factorial - Iterativo
+    "factorial_iterativo": "factorial_iterative",
+    "iterative factorial": "factorial_iterative",
+    "factorial por iteracion": "factorial_iterative",
+    "calcula el factorial iterativo": "factorial_iterative",
+    "factorial iterativo": "factorial_iterative",
+    "factorial by iteration": "factorial_iterative",
+    "find factorial iteratively": "factorial_iterative",
+    
+    # Factorial - Recursivo
+    "factorial_recursivo": "factorial_recursive",
+    "recursive factorial": "factorial_recursive",
+    "factorial por recursion": "factorial_recursive",
+    "calcula el factorial recursivo": "factorial_recursive",
+    "factorial recursivo": "factorial_recursive",
+    "factorial by recursion": "factorial_recursive",
+    "find factorial recursively": "factorial_recursive",
+    
+    # Factorial - General
+    "factorial": "factorial_general",
+    "calcula el factorial": "factorial_general",
+    "calculate factorial": "factorial_general",
+    "factorial of": "factorial_general",
+    "find factorial": "factorial_general",
+    "compute factorial": "factorial_general",
+    
+    # Fibonacci - Iterativo
+    "fibonacci_iterativo": "fibonacci_iterative",
+    "iterative fibonacci": "fibonacci_iterative",
+    "fibonacci por iteracion": "fibonacci_iterative",
+    "calcula el fibonacci iterativo": "fibonacci_iterative",
+    "fibonacci iterativo": "fibonacci_iterative",
+    "fibonacci by iteration": "fibonacci_iterative",
+    "find fibonacci iteratively": "fibonacci_iterative",
+    "iterative calculation of fibonacci": "fibonacci_iterative",
+    "compute iterative fibonacci": "fibonacci_iterative",
+    "iterative fibonacci of": "fibonacci_iterative",
+    "calculate iterative fibonacci": "fibonacci_iterative",
+
+    # Fibonacci - Recursivo
+    "fibonacci_recursivo": "fibonacci_recursive",
+    "recursive fibonacci": "fibonacci_recursive",
+    "fibonacci por recursion": "fibonacci_recursive",
+    "calcula el fibonacci recursivo": "fibonacci_recursive",
+    "fibonacci recursivo": "fibonacci_recursive",
+    "fibonacci by recursion": "fibonacci_recursive",
+    "find fibonacci recursively": "fibonacci_recursive",
+    "recursive calculation of fibonacci": "fibonacci_recursive",
+    "compute recursive fibonacci": "fibonacci_recursive",
+    "recursive fibonacci of": "fibonacci_recursive",
+    "calculate recursive fibonacci": "fibonacci_recursive",
+
+    # Fibonacci - General (sin especificar recursivo o iterativo)
+    "fibonacci": "fibonacci_general",
+    "serie de fibonacci": "fibonacci_general",
+    "find fibonacci": "fibonacci_general",
+    "calculate fibonacci": "fibonacci_general",
+    "compute fibonacci": "fibonacci_general",
+    "fibonacci of": "fibonacci_general",
+    "calculate the fibonacci of": "fibonacci_general",
+    
+    # Número primo
+    "primo": "prime_number",
+    "número primo": "prime_number",
+    "es primo": "prime_number",
+    "verificar primo": "prime_number",
+    "prime": "prime_number",
+    "is prime": "prime_number",
+    "check prime": "prime_number",
+    "prime number": "prime_number",
+    "find prime": "prime_number",
+    "calculate prime": "prime_number",
+    
+    # MCD - Iterativo
+    "mcd_iterativo": "gcd_iterative",
+    "iterative gcd": "gcd_iterative",
+    "calculate gcd iteratively": "gcd_iterative",
+    "find gcd iteratively": "gcd_iterative",
+    "mcd por iteracion": "gcd_iterative",
+    "máximo común divisor iterativo": "gcd_iterative",
+    "iterative greatest common divisor": "gcd_iterative",
+    "iterative euclidean algorithm": "gcd_iterative",
+    "gcd by iteration": "gcd_iterative",
+    
+    # MCD - Recursivo
+    "mcd_recursivo": "gcd_recursive",
+    "recursive gcd": "gcd_recursive",
+    "calculate gcd recursively": "gcd_recursive",
+    "find gcd recursively": "gcd_recursive",
+    "mcd por recursion": "gcd_recursive",
+    "mcd recursivo": "gcd_recursive",
+    "máximo común divisor recursivo": "gcd_recursive",
+    "recursive greatest common divisor": "gcd_recursive",
+    "recursive euclidean algorithm": "gcd_recursive",
+    "gcd by recursion": "gcd_recursive",
+    
+    # MCD - General
+    "mcd": "gcd_general",
+    "gcd": "gcd_general",
+    "find gcd": "gcd_general",
+    "calculate gcd": "gcd_general",
+    "greatest common divisor": "gcd_general",
+    "euclidean algorithm": "gcd_general",
+    "máximo común divisor": "gcd_general",
+    "maximo comun divisor": "gcd_general",
+
+    # Mínimo común múltiplo
+    "mcm": "lcm",
+    "lcm": "lcm",
+    "mínimo común múltiplo": "lcm",
+    "least common multiple": "lcm",
+    "least common multiple of": "lcm",
+    "find lcm": "lcm",
+    "calcula el mcm": "lcm",
+    "calcula el minimo comun multiplo": "lcm",
+    "find the least common multiple of": "lcm",
+    "calculate the least common multiple of": "lcm",
+    
+    # Potenciación
+    "potenciacion": "fast_exponentiation",
+    "exponentiation": "fast_exponentiation",
+    "fast exponentiation": "fast_exponentiation",
+    "power": "fast_exponentiation",
+    
+    # Contar dígitos
+    "cuenta los digitos": "contar_digitos", 
+    "cuenta los dígitos": "contar_digitos",
+    "contar_digitos": "digit_count",
+    "count digits": "digit_count",
+    "count the digits": "digit_count",
+    "count the digits of ": "digit_count",
+    "cuenta los dígitos": "digit_count",
+    "cuenta los digitos": "digit_count",
+    "cuenta dígitos": "digit_count",
+    "cuenta digitos": "digit_count",
+
+    # Suma de elementos de una lista
+    "suma_lista": "sum_list",
+    "sumar elementos de la lista": "sum_list",
+    "suma de lista": "sum_list",
+    "dame la suma de la lista": "sum_list",
+    "calcula la suma de la lista": "sum_list",
+    "suma de esta lista": "sum_list",
+    "podrías calcular la suma de la lista": "sum_list",
+    "me puedes dar la suma de la lista": "sum_list",
+    "puedes calcular la suma de la lista": "sum_list",
+    "sum elements of list": "sum_list",
+    "sum of list": "sum_list",
+    "calculate sum of list": "sum_list",
+    "add all elements in list": "sum_list",
+    "total sum of list": "sum_list",
+    
+    
+    # Promedio de una lista
+    "promedio_lista": "average_list",
+    "calcula el promedio de la lista": "average_list",
+    "promedio de lista": "average_list",
+    "dame el promedio de la lista": "average_list",
+    "promedio de esta lista": "average_list",
+    "average elements of list": "average_list",
+    "average of list": "average_list",
+    "calculate average of list": "average_list",
+    "get average of list": "average_list",
+    
+    # Máximo y mínimo de una lista
+    "max_min_lista": "max_min_list",
+    "máximo y mínimo de la lista": "max_min_list",
+    "máximo y mínimo": "max_min_list",
+    "máximo mínimo lista": "max_min_list",
+    "encontrar el máximo y mínimo": "max_min_list",
+    "find max and min": "max_min_list",
+    "maximum and minimum in list": "max_min_list",
+    "calculate max and min": "max_min_list",
+    "get max and min from list": "max_min_list",
+    "highest and lowest values": "max_min_list",
+    "biggest and smallest in list": "max_min_list",
+    "find the maximum and minimum": "max_min_list",
+    "get the maximum and minimum of": "max_min_list",
+    "calculate the maximum and minimum of": "max_min_list",
+    "find the biggest and smallest of": "max_min_list",
+    
+    # Búsqueda lineal
+    "busqueda_lineal": "linear_search",
+    "buscar elemento en lista": "linear_search",
+    "buscar en lista": "linear_search",
+    "buscar": "linear_search",
+    "busca": "linear_search",
+    "encontrar elemento en lista": "linear_search",
+    "búsqueda lineal": "linear_search",
+    "búscame el elemento en la lista": "linear_search",
+    "buscar número en lista": "linear_search",
+    "buscar un número en la lista": "linear_search",
+    "busca el elemento en la lista": "linear_search",
+    "localiza elemento en lista": "linear_search",
+    "localiza el número en la lista": "linear_search",
+    "linear search": "linear_search",
+    "find element in list": "linear_search",
+    "search element in list": "linear_search",
+    "search in list": "linear_search",
+    "look for element in list": "linear_search",
+    "locate element in list": "linear_search",
+    "search for number in list": "linear_search",
+    "find the number in list": "linear_search",
+    "locate the element in list": "linear_search",
+    
+    # Invertir lista
+    "invertir_lista": "reverse_list",
+    "invertir lista": "reverse_list",
+    "reversa de lista": "reverse_list",
+    "invierte la lista": "reverse_list",
+    "lista invertida": "reverse_list",
+    "da la vuelta a la lista": "reverse_list",
+    "voltea la lista": "reverse_list",
+    "reverse list": "reverse_list",
+    "invert list": "reverse_list",
+    "invert list elements": "reverse_list",
+    "reverse the list": "reverse_list",
+    "flip the list": "reverse_list",
+    "turn the list around": "reverse_list",
+    "list reversed": "reverse_list",
+    
+    # Eliminar duplicados
+    "eliminar_duplicados": "remove_duplicates",
+    "eliminar duplicados de lista": "remove_duplicates",
+    "quita duplicados de lista": "remove_duplicates",
+    "elimina duplicados de lista": "remove_duplicates",
+    "elimina los duplicados de la lista": "remove_duplicates",
+    "borra duplicados de lista": "remove_duplicates",
+    "sin duplicados en lista": "remove_duplicates",
+    "remove duplicates from list": "remove_duplicates",
+    "delete duplicates in list": "remove_duplicates",
+    "get unique values from list": "remove_duplicates",
+    "filter out duplicates": "remove_duplicates",
+    "no duplicates in list": "remove_duplicates",
+    "remove repeated elements": "remove_duplicates",
+    "deduplicate list": "remove_duplicates",
+    "elimina duplicados": "remove_duplicates",
+    "quita los duplicados": "remove_duplicates",
+    "borra los duplicados": "remove_duplicates",
+    "remove the duplicates": "remove_duplicates",
+    "delete repeated items": "remove_duplicates"
+
+}
+```
+
+- Entrada de Usuario: La función toma una entrada de texto (entrada_usuario).
+Extracción de Componentes: Utiliza una función extraer_condicion_natural_spacy para analizar el texto y extraer la variable, operador, valor, y los mensajes para los bloques if y else. Si no se pueden extraer correctamente, devuelve un mensaje de error.
+Generación del Código: Con los componentes extraídos, crea una cadena de texto que contiene el bloque if correspondiente.
+Salida: Devuelve el código Python generado dentro de un bloque de texto que puede ser copiado y pegado.
+
+```
+def generar_codigo_if_natural(entrada_usuario):
+    datos = extraer_condicion_natural_spacy(entrada_usuario)
+    if not datos:
+        return "No pude entender bien la condición. Asegúrate de especificar variable, operador, valor y mensajes."
+
+    variable = datos["variable"]
+    operador = datos["operador"]
+    valor = datos["valor"]
+    mensaje_if = datos["mensaje_if"]
+    mensaje_else = datos["mensaje_else"]
+    
+    # Construir el bloque de código en Python
+    codigo = f"""if {variable} {operador} {valor}:
+    print("{mensaje_if}")
+else:
+    print("{mensaje_else}")"""
+    
+    return f"Aquí tienes tu bloque de código:\n\n
+python\n{codigo}\n
+"
+
+ALGORITMOS_CODIGO = {
+    # Ordenamientos
+    "burbuja": "bubble_sort",
+    "bubble sort": "bubble_sort",
+    "ordenamiento burbuja": "bubble_sort",
+    "ordenar por burbuja": "bubble_sort",
+    "bubble": "bubble_sort",
+    "sort by bubble": "bubble_sort",
+    "perform bubble sort": "bubble_sort",
+    "do bubble sort": "bubble_sort",
+    "use bubble sort": "bubble_sort",
+
+    "quicksort": "quick_sort",
+    "insercion": "insertion_sort",
+    "insertion sort": "insertion_sort",
+    "seleccion": "selection_sort",
+    "selection sort": "selection_sort",
+    
+
+    # Factorial - Iterativo
+    "factorial_iterativo": "factorial_iterative",
+    "iterative factorial": "factorial_iterative",
+    "factorial por iteracion": "factorial_iterative",
+    "calcula el factorial iterativo": "factorial_iterative",
+    "factorial iterativo": "factorial_iterative",
+    "factorial by iteration": "factorial_iterative",
+    "find factorial iteratively": "factorial_iterative",
+    
+    # Factorial - Recursivo
+    "factorial_recursivo": "factorial_recursive",
+    "recursive factorial": "factorial_recursive",
+    "factorial por recursion": "factorial_recursive",
+    "calcula el factorial recursivo": "factorial_recursive",
+    "factorial recursivo": "factorial_recursive",
+    "factorial by recursion": "factorial_recursive",
+    "find factorial recursively": "factorial_recursive",
+    
+    # Factorial - General
+    "factorial": "factorial_general",
+    "calcula el factorial": "factorial_general",
+    "calculate factorial": "factorial_general",
+    "factorial of": "factorial_general",
+    "find factorial": "factorial_general",
+    "compute factorial": "factorial_general",
+    
+    # Fibonacci - Iterativo
+    "fibonacci_iterativo": "fibonacci_iterative",
+    "iterative fibonacci": "fibonacci_iterative",
+    "fibonacci por iteracion": "fibonacci_iterative",
+    "calcula el fibonacci iterativo": "fibonacci_iterative",
+    "fibonacci iterativo": "fibonacci_iterative",
+    "fibonacci by iteration": "fibonacci_iterative",
+    "find fibonacci iteratively": "fibonacci_iterative",
+    "iterative calculation of fibonacci": "fibonacci_iterative",
+    "compute iterative fibonacci": "fibonacci_iterative",
+    "iterative fibonacci of": "fibonacci_iterative",
+    "calculate iterative fibonacci": "fibonacci_iterative",
+
+    # Fibonacci - Recursivo
+    "fibonacci_recursivo": "fibonacci_recursive",
+    "recursive fibonacci": "fibonacci_recursive",
+    "fibonacci por recursion": "fibonacci_recursive",
+    "calcula el fibonacci recursivo": "fibonacci_recursive",
+    "fibonacci recursivo": "fibonacci_recursive",
+    "fibonacci by recursion": "fibonacci_recursive",
+    "find fibonacci recursively": "fibonacci_recursive",
+    "recursive calculation of fibonacci": "fibonacci_recursive",
+    "compute recursive fibonacci": "fibonacci_recursive",
+    "recursive fibonacci of": "fibonacci_recursive",
+    "calculate recursive fibonacci": "fibonacci_recursive",
+
+    # Fibonacci - General (sin especificar recursivo o iterativo)
+    "fibonacci": "fibonacci_general",
+    "serie de fibonacci": "fibonacci_general",
+    "find fibonacci": "fibonacci_general",
+    "calculate fibonacci": "fibonacci_general",
+    "compute fibonacci": "fibonacci_general",
+    "fibonacci of": "fibonacci_general",
+    "calculate the fibonacci of": "fibonacci_general",
+    
+    # Número primo
+    "primo": "prime_number",
+    "número primo": "prime_number",
+    "es primo": "prime_number",
+    "verificar primo": "prime_number",
+    "prime": "prime_number",
+    "is prime": "prime_number",
+    "check prime": "prime_number",
+    "prime number": "prime_number",
+    "find prime": "prime_number",
+    "calculate prime": "prime_number",
+    
+    # MCD - Iterativo
+    "mcd_iterativo": "gcd_iterative",
+    "iterative gcd": "gcd_iterative",
+    "calculate gcd iteratively": "gcd_iterative",
+    "find gcd iteratively": "gcd_iterative",
+    "mcd por iteracion": "gcd_iterative",
+    "máximo común divisor iterativo": "gcd_iterative",
+    "iterative greatest common divisor": "gcd_iterative",
+    "iterative euclidean algorithm": "gcd_iterative",
+    "gcd by iteration": "gcd_iterative",
+    
+    # MCD - Recursivo
+    "mcd_recursivo": "gcd_recursive",
+    "recursive gcd": "gcd_recursive",
+    "calculate gcd recursively": "gcd_recursive",
+    "find gcd recursively": "gcd_recursive",
+    "mcd por recursion": "gcd_recursive",
+    "mcd recursivo": "gcd_recursive",
+    "máximo común divisor recursivo": "gcd_recursive",
+    "recursive greatest common divisor": "gcd_recursive",
+    "recursive euclidean algorithm": "gcd_recursive",
+    "gcd by recursion": "gcd_recursive",
+    
+    # MCD - General
+    "mcd": "gcd_general",
+    "gcd": "gcd_general",
+    "find gcd": "gcd_general",
+    "calculate gcd": "gcd_general",
+    "greatest common divisor": "gcd_general",
+    "euclidean algorithm": "gcd_general",
+    "máximo común divisor": "gcd_general",
+    "maximo comun divisor": "gcd_general",
+
+    # Mínimo común múltiplo
+    "mcm": "lcm",
+    "lcm": "lcm",
+    "mínimo común múltiplo": "lcm",
+    "least common multiple": "lcm",
+    "least common multiple of": "lcm",
+    "find lcm": "lcm",
+    "calcula el mcm": "lcm",
+    "calcula el minimo comun multiplo": "lcm",
+    "find the least common multiple of": "lcm",
+    "calculate the least common multiple of": "lcm",
+    
+    # Potenciación
+    "potenciacion": "fast_exponentiation",
+    "exponentiation": "fast_exponentiation",
+    "fast exponentiation": "fast_exponentiation",
+    "power": "fast_exponentiation",
+    
+    # Contar dígitos
+    "cuenta los digitos": "contar_digitos", 
+    "cuenta los dígitos": "contar_digitos",
+    "contar_digitos": "digit_count",
+    "count digits": "digit_count",
+    "count the digits": "digit_count",
+    "count the digits of ": "digit_count",
+    "cuenta los dígitos": "digit_count",
+    "cuenta los digitos": "digit_count",
+    "cuenta dígitos": "digit_count",
+    "cuenta digitos": "digit_count",
+
+    # Suma de elementos de una lista
+    "suma_lista": "sum_list",
+    "sumar elementos de la lista": "sum_list",
+    "suma de lista": "sum_list",
+    "dame la suma de la lista": "sum_list",
+    "calcula la suma de la lista": "sum_list",
+    "suma de esta lista": "sum_list",
+    "podrías calcular la suma de la lista": "sum_list",
+    "me puedes dar la suma de la lista": "sum_list",
+    "puedes calcular la suma de la lista": "sum_list",
+    "sum elements of list": "sum_list",
+    "sum of list": "sum_list",
+    "calculate sum of list": "sum_list",
+    "add all elements in list": "sum_list",
+    "total sum of list": "sum_list",
+    
+    
+    # Promedio de una lista
+    "promedio_lista": "average_list",
+    "calcula el promedio de la lista": "average_list",
+    "promedio de lista": "average_list",
+    "dame el promedio de la lista": "average_list",
+    "promedio de esta lista": "average_list",
+    "average elements of list": "average_list",
+    "average of list": "average_list",
+    "calculate average of list": "average_list",
+    "get average of list": "average_list",
+    
+    # Máximo y mínimo de una lista
+    "max_min_lista": "max_min_list",
+    "máximo y mínimo de la lista": "max_min_list",
+    "máximo y mínimo": "max_min_list",
+    "máximo mínimo lista": "max_min_list",
+    "encontrar el máximo y mínimo": "max_min_list",
+    "find max and min": "max_min_list",
+    "maximum and minimum in list": "max_min_list",
+    "calculate max and min": "max_min_list",
+    "get max and min from list": "max_min_list",
+    "highest and lowest values": "max_min_list",
+    "biggest and smallest in list": "max_min_list",
+    "find the maximum and minimum": "max_min_list",
+    "get the maximum and minimum of": "max_min_list",
+    "calculate the maximum and minimum of": "max_min_list",
+    "find the biggest and smallest of": "max_min_list",
+    
+    # Búsqueda lineal
+    "busqueda_lineal": "linear_search",
+    "buscar elemento en lista": "linear_search",
+    "buscar en lista": "linear_search",
+    "buscar": "linear_search",
+    "busca": "linear_search",
+    "encontrar elemento en lista": "linear_search",
+    "búsqueda lineal": "linear_search",
+    "búscame el elemento en la lista": "linear_search",
+    "buscar número en lista": "linear_search",
+    "buscar un número en la lista": "linear_search",
+    "busca el elemento en la lista": "linear_search",
+    "localiza elemento en lista": "linear_search",
+    "localiza el número en la lista": "linear_search",
+    "linear search": "linear_search",
+    "find element in list": "linear_search",
+    "search element in list": "linear_search",
+    "search in list": "linear_search",
+    "look for element in list": "linear_search",
+    "locate element in list": "linear_search",
+    "search for number in list": "linear_search",
+    "find the number in list": "linear_search",
+    "locate the element in list": "linear_search",
+    
+    # Invertir lista
+    "invertir_lista": "reverse_list",
+    "invertir lista": "reverse_list",
+    "reversa de lista": "reverse_list",
+    "invierte la lista": "reverse_list",
+    "lista invertida": "reverse_list",
+    "da la vuelta a la lista": "reverse_list",
+    "voltea la lista": "reverse_list",
+    "reverse list": "reverse_list",
+    "invert list": "reverse_list",
+    "invert list elements": "reverse_list",
+    "reverse the list": "reverse_list",
+    "flip the list": "reverse_list",
+    "turn the list around": "reverse_list",
+    "list reversed": "reverse_list",
+    
+    # Eliminar duplicados
+    "eliminar_duplicados": "remove_duplicates",
+    "eliminar duplicados de lista": "remove_duplicates",
+    "quita duplicados de lista": "remove_duplicates",
+    "elimina duplicados de lista": "remove_duplicates",
+    "elimina los duplicados de la lista": "remove_duplicates",
+    "borra duplicados de lista": "remove_duplicates",
+    "sin duplicados en lista": "remove_duplicates",
+    "remove duplicates from list": "remove_duplicates",
+    "delete duplicates in list": "remove_duplicates",
+    "get unique values from list": "remove_duplicates",
+    "filter out duplicates": "remove_duplicates",
+    "no duplicates in list": "remove_duplicates",
+    "remove repeated elements": "remove_duplicates",
+    "deduplicate list": "remove_duplicates",
+    "elimina duplicados": "remove_duplicates",
+    "quita los duplicados": "remove_duplicates",
+    "borra los duplicados": "remove_duplicates",
+    "remove the duplicates": "remove_duplicates",
+    "delete repeated items": "remove_duplicates"
+
+}
+```
+
+-  función procesar_cadena_spacy que, dependiendo del algoritmo y lenguaje seleccionados (Python o JavaScript), genera el código correspondiente para manipular cadenas de texto, como invertir, convertir a mayúsculas, calcular longitud, entre otros. Utiliza un diccionario MAPEO_ALGORITMOS para mapear los nombres de los algoritmos a sus versiones en español, lo que permite traducir las solicitudes del usuario a acciones específicas. El código es modular y se puede expandir fácilmente con nuevos algoritmos, aunque sería útil añadir un manejo de errores y validación de entradas para mejorar su robustez. Además, para mejorar la escalabilidad, se recomienda organizar los algoritmos en funciones separadas.
+
+![alt text](image-2.png)
+
+- codigo para contar palabras 
+- ![alt text](image-3.png)
+
+
+
+
